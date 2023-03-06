@@ -1,11 +1,21 @@
 #version 460 core
 
 uniform float u_time;
+uniform vec2 u_resolution;
 
 #define T u_time
+#define R u_resolution
 
 out vec4 FragColor;
 
 void main(){
-  FragColor = vec4(.0, .0, sin(T), 1.0f);
+
+  vec2 uv = gl_FragCoord.xy/R.xy;
+
+  vec2 pos = uv;
+
+  pos -= .5;
+  pos.x *= R.x/R.y;
+  
+  FragColor = vec4(pos, .0, 1.0f);
 }

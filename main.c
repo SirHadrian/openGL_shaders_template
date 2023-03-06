@@ -3,8 +3,8 @@
 
 int main() {
 
-  const int HEIGHT = 600;
-  const int WIDTH = 800;
+  const float HEIGHT = 600.0f;
+  const float WIDTH = 800.0f;
 
   const char *TITLE = "OpenGL Template";
 
@@ -134,9 +134,12 @@ int main() {
 
     float time = glfwGetTime();
     GLuint u_time_location = glGetUniformLocation(shader_program, "u_time");
+    GLuint u_resolution_location =
+        glGetUniformLocation(shader_program, "u_resolution");
 
     glUseProgram(shader_program);
     glUniform1f(u_time_location, time);
+    glUniform2f(u_resolution_location, WIDTH, HEIGHT);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
