@@ -82,8 +82,7 @@ int main() {
   glDeleteShader(fragment_shader);
 
   float vertices[] = {
-      // positions
-      // colors
+      // positions         // colors
       0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
       -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
       0.0f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f  // top
@@ -124,6 +123,7 @@ int main() {
 
   while (!glfwWindowShouldClose(window)) {
 
+    // Input
     process_input(window);
 
     // Render
@@ -142,10 +142,12 @@ int main() {
     glDrawArrays(GL_TRIANGLES, 0, 3);
     glBindVertexArray(0);
 
+    // Swap buffers and pull IO events
     glfwSwapBuffers(window);
     glfwPollEvents();
   }
 
+  // Dealocate resources
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
   glDeleteBuffers(1, &EBO);
