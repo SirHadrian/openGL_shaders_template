@@ -167,7 +167,7 @@ void die(const char *error) {
 
 void compile_shaders(const GLuint *const shader_program) {
 
-  char *vertex_shader_source = get_shader("shaders/vertex_shader.glsl");
+  char *vertex_shader_source = get_shader("shaders/vertex_shader.c");
 
   GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertex_shader, 1, (char const *const *)&vertex_shader_source,
@@ -180,13 +180,13 @@ void compile_shaders(const GLuint *const shader_program) {
 
   if (!success) {
     glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
-    fprintf(stderr, "Compilation error: %s\n", info_log);
-    die("Vertex shader compilation error");
+    fprintf(stderr, "Vertex shader compilation error: %s\n", info_log);
+    return;
   }
 
   free(vertex_shader_source);
 
-  char *fragment_shader_source = get_shader("shaders/fragment_shader.glsl");
+  char *fragment_shader_source = get_shader("shaders/fragment_shader.c");
 
   GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
   glShaderSource(fragment_shader, 1,
@@ -197,8 +197,8 @@ void compile_shaders(const GLuint *const shader_program) {
 
   if (!success) {
     glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
-    fprintf(stderr, "Compilation error: %s\n", info_log);
-    die("Fragment shader compilation error");
+    fprintf(stderr, "Fragment shader compilation error: %s\n", info_log);
+    return;
   }
 
   free(fragment_shader_source);
@@ -210,8 +210,8 @@ void compile_shaders(const GLuint *const shader_program) {
   glGetProgramiv(*shader_program, GL_LINK_STATUS, &success);
   if (!success) {
     glGetProgramInfoLog(*shader_program, 512, NULL, info_log);
-    fprintf(stderr, "Linking error: %s\n", info_log);
-    die("Shader program linking error");
+    fprintf(stderr, "Shader program linking error: %s\n", info_log);
+    return;
   }
 
   glDeleteShader(vertex_shader);
