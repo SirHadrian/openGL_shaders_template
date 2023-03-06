@@ -6,11 +6,10 @@ int main() {
   const int HEIGHT = 600;
   const int WIDTH = 800;
 
-  const char *TITLE = "Learn OpengGL";
+  const char *TITLE = "OpenGL Template";
 
   if (!glfwInit()) {
-    fprintf(stderr, "Could not initialize GLFW\n");
-    die();
+    die("Could not initialize GLFW");
   }
 
   glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -20,16 +19,14 @@ int main() {
   GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
 
   if (!window) {
-    fprintf(stderr, "Failed to create GLFW window\n");
     glfwTerminate();
-    die();
+    die("Failed to create GLFW window");
   }
 
   glfwMakeContextCurrent(window);
 
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-    fprintf(stderr, "Failed to initialize GLAD\n");
-    die();
+    die("Failed to initialize GLAD");
   }
 
   glViewport(0, 0, WIDTH, HEIGHT);
@@ -47,8 +44,8 @@ int main() {
 
   if (!success) {
     glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
-    fprintf(stderr, "Vertex shader compilation error: %s\n", info_log);
-    die();
+    fprintf(stderr, "Compilation error: %s\n", info_log);
+    die("Vertex shader compilation error");
   }
 
   free(vertex_shader_source);
@@ -63,8 +60,8 @@ int main() {
 
   if (!success) {
     glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
-    fprintf(stderr, "Fragment shader compilation error: %s\n", info_log);
-    die();
+    fprintf(stderr, "Compilation error: %s\n", info_log);
+    die("Fragment shader compilation error");
   }
 
   free(fragment_shader_source);
@@ -77,8 +74,8 @@ int main() {
   glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
   if (!success) {
     glGetProgramInfoLog(shader_program, 512, NULL, info_log);
-    fprintf(stderr, "Shader program linking error: %s\n", info_log);
-    die();
+    fprintf(stderr, "Linking error: %s\n", info_log);
+    die("Shader program linking error");
   }
 
   glDeleteShader(vertex_shader);
@@ -172,8 +169,7 @@ char *get_shader(char *shader_file) {
 
   FILE *file = fopen(shader_file, "r");
   if (!file) {
-    fprintf(stderr, "Could not open the shader file\n");
-    die();
+    die("Could not open the shader file");
   }
 
   fseek(file, 0, SEEK_END);
@@ -182,8 +178,7 @@ char *get_shader(char *shader_file) {
 
   char *shader_string = (char *)malloc(sizeof(char) * (length + 1));
   if (!shader_string) {
-    fprintf(stderr, "Could not alocate memory for file contents");
-    die();
+    die("Could not alocate memory for file contents");
   }
 
   char cursor;
@@ -201,4 +196,7 @@ char *get_shader(char *shader_file) {
   return shader_string;
 }
 
-void die() { exit(EXIT_FAILURE); }
+void die(const char *error) {
+  fprintf(stderr, "%s\n", error);
+  exit(EXIT_FAILURE);
+}
