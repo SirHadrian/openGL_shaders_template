@@ -1,4 +1,3 @@
-#pragma once
 #include "main.h"
 #include <GLFW/glfw3.h>
 
@@ -171,7 +170,7 @@ void die(const char *error) {
   exit(EXIT_FAILURE);
 }
 
-void compile_shaders(const GLuint *shader_program) {
+void compile_shaders(const GLuint *const shader_program) {
 
   char *vertex_shader_source = get_shader("shaders/vertex_shader.glsl");
 

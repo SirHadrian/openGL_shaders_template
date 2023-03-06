@@ -20,4 +20,4 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void process_input(GLFWwindow *window, GLuint *shader_program);
 char *get_shader(char *shader_file);
 void die(const char *error);
-void compile_shaders(const GLuint *shader_program);
+void compile_shaders(const GLuint *const shader_program);
