@@ -3,17 +3,12 @@
 
 int main() {
 
-  const float HEIGHT = 600.0f;
-  const float WIDTH = 800.0f;
-
-  const char *TITLE = "OpenGL Template";
-
   if (!glfwInit()) {
     die("Could not initialize GLFW");
   }
 
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, MAJOR_VERS);
+  glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, MINOR_VERS);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
   GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);

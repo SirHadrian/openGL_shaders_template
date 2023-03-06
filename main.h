@@ -16,6 +16,14 @@
 #define FALSE 0
 #endif
 
+#define WIDTH 800.0f
+#define HEIGHT 600.0f
+
+#define TITLE "OpenGL Template"
+
+#define MAJOR_VERS 4
+#define MINOR_VERS 6
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void process_input(GLFWwindow *window, GLuint *shader_program);
 char *get_shader(char *shader_file);
