@@ -176,7 +176,8 @@ void compile_shaders(const GLuint *shader_program) {
   char *vertex_shader_source = get_shader("shaders/vertex_shader.glsl");
 
   GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
+  glShaderSource(vertex_shader, 1, (char const *const *)&vertex_shader_source,
+                 NULL);
   glCompileShader(vertex_shader);
 
   int success;
@@ -194,7 +195,8 @@ void compile_shaders(const GLuint *shader_program) {
   char *fragment_shader_source = get_shader("shaders/fragment_shader.glsl");
 
   GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
+  glShaderSource(fragment_shader, 1,
+                 (char const *const *)&fragment_shader_source, NULL);
   glCompileShader(fragment_shader);
 
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
