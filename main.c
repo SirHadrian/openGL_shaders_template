@@ -133,12 +133,10 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     float time = glfwGetTime();
-    float green = (sin(time) / 2.0f) + 0.5f;
-    GLuint vertex_color_location =
-        glGetUniformLocation(shader_program, "custom_color");
+    GLuint u_time_location = glGetUniformLocation(shader_program, "u_time");
 
     glUseProgram(shader_program);
-    glUniform4f(vertex_color_location, 0.0f, green, 0.0f, 1.0f);
+    glUniform1f(u_time_location, time);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
