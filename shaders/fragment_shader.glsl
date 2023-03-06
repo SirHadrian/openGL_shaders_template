@@ -17,5 +17,5 @@ void main(){
   pos -= .5;
   pos.x *= R.x/R.y;
   
-  FragColor = vec4(pos, .0, 1.0f);
+  FragColor = vec4(uv, .0, 1.0f);
 }

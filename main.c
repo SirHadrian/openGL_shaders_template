@@ -1,5 +1,6 @@
 #pragma once
 #include "main.h"
+#include <GLFW/glfw3.h>
 
 int main() {
 
@@ -31,55 +32,6 @@ int main() {
 
   glViewport(0, 0, WIDTH, HEIGHT);
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-
-  char *vertex_shader_source = get_shader("shaders/vertex_shader.glsl");
-
-  GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
-  glCompileShader(vertex_shader);
-
-  int success;
-  char info_log[512];
-  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
-
-  if (!success) {
-    glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
-    fprintf(stderr, "Compilation error: %s\n", info_log);
-    die("Vertex shader compilation error");
-  }
-
-  free(vertex_shader_source);
-
-  char *fragment_shader_source = get_shader("shaders/fragment_shader.glsl");
-
-  GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
-  glCompileShader(fragment_shader);
-
-  glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
-
-  if (!success) {
-    glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
-    fprintf(stderr, "Compilation error: %s\n", info_log);
-    die("Fragment shader compilation error");
-  }
-
-  free(fragment_shader_source);
-
-  GLuint shader_program = glCreateProgram();
-  glAttachShader(shader_program, vertex_shader);
-  glAttachShader(shader_program, fragment_shader);
-  glLinkProgram(shader_program);
-
-  glGetProgramiv(shader_program, GL_LINK_STATUS, &success);
-  if (!success) {
-    glGetProgramInfoLog(shader_program, 512, NULL, info_log);
-    fprintf(stderr, "Linking error: %s\n", info_log);
-    die("Shader program linking error");
-  }
-
-  glDeleteShader(vertex_shader);
-  glDeleteShader(fragment_shader);
 
   float vertices[] = {
       1.0f,  1.0f,  0.0f, // top right
@@ -120,13 +72,17 @@ int main() {
 
   glBindVertexArray(0);
 
+  // Shader program
+  GLuint shader_program = glCreateProgram();
+  compile_shaders(&shader_program);
+
   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
   // Render loop
   while (!glfwWindowShouldClose(window)) {
 
     // Input
-    process_input(window);
+    process_input(window, &shader_program);
 
     // Render
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -159,6 +115,7 @@ int main() {
   glDeleteProgram(shader_program);
 
   glfwTerminate();
+
   return 0;
 }
 
@@ -166,9 +123,16 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
-void process_input(GLFWwindow *window) {
+void process_input(GLFWwindow *window, GLuint *shader_program) {
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, TRUE);
+  else if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+
+    glDeleteProgram(*shader_program);
+    *shader_program = glCreateProgram();
+
+    compile_shaders(shader_program);
+  }
 }
 
 char *get_shader(char *shader_file) {
@@ -205,4 +169,55 @@ char *get_shader(char *shader_file) {
 void die(const char *error) {
   fprintf(stderr, "%s\n", error);
   exit(EXIT_FAILURE);
+}
+
+void compile_shaders(const GLuint *shader_program) {
+
+  char *vertex_shader_source = get_shader("shaders/vertex_shader.glsl");
+
+  GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertex_shader, 1, &vertex_shader_source, NULL);
+  glCompileShader(vertex_shader);
+
+  int success;
+  char info_log[512];
+  glGetShaderiv(vertex_shader, GL_COMPILE_STATUS, &success);
+
+  if (!success) {
+    glGetShaderInfoLog(vertex_shader, 512, NULL, info_log);
+    fprintf(stderr, "Compilation error: %s\n", info_log);
+    die("Vertex shader compilation error");
+  }
+
+  free(vertex_shader_source);
+
+  char *fragment_shader_source = get_shader("shaders/fragment_shader.glsl");
+
+  GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragment_shader, 1, &fragment_shader_source, NULL);
+  glCompileShader(fragment_shader);
+
+  glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
+
+  if (!success) {
+    glGetShaderInfoLog(fragment_shader, 512, NULL, info_log);
+    fprintf(stderr, "Compilation error: %s\n", info_log);
+    die("Fragment shader compilation error");
+  }
+
+  free(fragment_shader_source);
+
+  glAttachShader(*shader_program, vertex_shader);
+  glAttachShader(*shader_program, fragment_shader);
+  glLinkProgram(*shader_program);
+
+  glGetProgramiv(*shader_program, GL_LINK_STATUS, &success);
+  if (!success) {
+    glGetProgramInfoLog(*shader_program, 512, NULL, info_log);
+    fprintf(stderr, "Linking error: %s\n", info_log);
+    die("Shader program linking error");
+  }
+
+  glDeleteShader(vertex_shader);
+  glDeleteShader(fragment_shader);
 }
