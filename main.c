@@ -82,10 +82,10 @@ int main() {
   glDeleteShader(fragment_shader);
 
   float vertices[] = {
-      0.5f,  0.5f,  0.0f, // top right
-      0.5f,  -0.5f, 0.0f, // bottom right
-      -0.5f, -0.5f, 0.0f, // bottom left
-      -0.5f, 0.5f,  0.0f  // top left
+      1.0f,  1.0f,  0.0f, // top right
+      1.0f,  -1.0f, 0.0f, // bottom right
+      -1.0f, -1.0f, 0.0f, // bottom left
+      -1.0f, 1.0f,  0.0f  // top left
   };
 
   unsigned int indices[] = {
@@ -129,7 +129,7 @@ int main() {
     process_input(window);
 
     // Render
-    glClearColor(0.2f, 0.3f, 0.2f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     float time = glfwGetTime();
