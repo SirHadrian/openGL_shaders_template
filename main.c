@@ -1,6 +1,10 @@
 #include "main.h"
 #include <GLFW/glfw3.h>
 
+// Cursor state
+double xMousePos, yMousePos = 0.f;
+int inWindow = 0;
+
 int main() {
 
   if (!glfwInit()) {
@@ -77,14 +81,11 @@ int main() {
 
   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-  // Mouse position variables
-  double xpos, ypos;
-
   // Render loop
   while (!glfwWindowShouldClose(window)) {
 
     // Input
-    process_input(window, &shader_program, &xpos, &ypos);
+    process_input(window, &shader_program);
 
     // Render
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -94,10 +95,12 @@ int main() {
     GLuint u_time_location = glGetUniformLocation(shader_program, "u_time");
     GLuint u_resolution_location =
         glGetUniformLocation(shader_program, "u_resolution");
+    GLuint u_mouse_location = glGetUniformLocation(shader_program, "u_mouse");
 
     glUseProgram(shader_program);
     glUniform1f(u_time_location, time);
     glUniform2f(u_resolution_location, WIDTH, HEIGHT);
+    glUniform2f(u_mouse_location, xMousePos, yMousePos);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
@@ -125,10 +128,7 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
-void process_input(GLFWwindow *window, GLuint *shader_program, double *xpos,
-                   double *ypos) {
-
-  glfwGetCursorPos(window, xpos, ypos);
+void process_input(GLFWwindow *window, GLuint *shader_program) {
 
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) ||
       glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
@@ -231,6 +231,17 @@ void compile_shaders(const GLuint *const shader_program) {
   glDeleteShader(fragment_shader);
 }
 static void cursor_position_callback(GLFWwindow *window, double xPos,
-                                     double yPos) {}
+                                     double yPos) {
+  if (inWindow) {
+    xMousePos = xPos;
+    yMousePos = yPos;
+  }
+}
 
-void cursor_enter_callback(GLFWwindow *window, int inside) {}
+void cursor_enter_callback(GLFWwindow *window, int inside) {
+  if (inside) {
+    inWindow = 1;
+  } else {
+    inWindow = 0;
+  }
+}
