@@ -1,5 +1,4 @@
 #include "main.h"
-#include <GLFW/glfw3.h>
 
 // Cursor state
 double xMousePos, yMousePos = 0.f;
