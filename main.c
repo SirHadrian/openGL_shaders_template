@@ -118,7 +118,8 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 }
 
 void process_input(GLFWwindow *window, GLuint *shader_program) {
-  if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+  if (glfwGetKey(window, GLFW_KEY_ESCAPE) ||
+      glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, TRUE);
   else if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
 
