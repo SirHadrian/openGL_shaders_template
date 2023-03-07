@@ -27,6 +27,11 @@ int main() {
   glViewport(0, 0, WIDTH, HEIGHT);
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
+  // Mouse
+  glfwSetCursorPosCallback(window, cursor_position_callback);
+  glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+  glfwSetCursorEnterCallback(window, cursor_enter_callback);
+
   float vertices[] = {
       1.0f,  1.0f,  0.0f, // top right
       1.0f,  -1.0f, 0.0f, // bottom right
@@ -72,11 +77,14 @@ int main() {
 
   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+  // Mouse position variables
+  double xpos, ypos;
+
   // Render loop
   while (!glfwWindowShouldClose(window)) {
 
     // Input
-    process_input(window, &shader_program);
+    process_input(window, &shader_program, &xpos, &ypos);
 
     // Render
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -117,7 +125,11 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
   glViewport(0, 0, width, height);
 }
 
-void process_input(GLFWwindow *window, GLuint *shader_program) {
+void process_input(GLFWwindow *window, GLuint *shader_program, double *xpos,
+                   double *ypos) {
+
+  glfwGetCursorPos(window, xpos, ypos);
+
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) ||
       glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, TRUE);
@@ -218,3 +230,7 @@ void compile_shaders(const GLuint *const shader_program) {
   glDeleteShader(vertex_shader);
   glDeleteShader(fragment_shader);
 }
+static void cursor_position_callback(GLFWwindow *window, double xPos,
+                                     double yPos) {}
+
+void cursor_enter_callback(GLFWwindow *window, int inside) {}
