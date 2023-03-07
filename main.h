@@ -21,6 +21,13 @@
 
 #define TITLE "OpenGL Template"
 
+#define UNIFORM_TIME "u_time"
+#define UNIFORM_MOUSE "u_mouse"
+#define UNIFORM_RESOLUTION "u_resolution"
+
+#define VERTEX_SHADER_PATH "shaders/vertex_shader.c"
+#define FRAGMENT_SHADER_PATH "shaders/fragment_shader.c"
+
 #define MAJOR_VERS 4
 #define MINOR_VERS 6
 

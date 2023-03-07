@@ -92,10 +92,11 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     float time = glfwGetTime();
-    GLuint u_time_location = glGetUniformLocation(shader_program, "u_time");
+    GLuint u_time_location = glGetUniformLocation(shader_program, UNIFORM_TIME);
     GLuint u_resolution_location =
-        glGetUniformLocation(shader_program, "u_resolution");
-    GLuint u_mouse_location = glGetUniformLocation(shader_program, "u_mouse");
+        glGetUniformLocation(shader_program, UNIFORM_RESOLUTION);
+    GLuint u_mouse_location =
+        glGetUniformLocation(shader_program, UNIFORM_MOUSE);
 
     glUseProgram(shader_program);
     glUniform1f(u_time_location, time);
@@ -180,7 +181,7 @@ void die(const char *error) {
 
 void compile_shaders(const GLuint *const shader_program) {
 
-  char *vertex_shader_source = get_shader("shaders/vertex_shader.c");
+  char *vertex_shader_source = get_shader(VERTEX_SHADER_PATH);
 
   GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertex_shader, 1, (char const *const *)&vertex_shader_source,
@@ -199,7 +200,7 @@ void compile_shaders(const GLuint *const shader_program) {
 
   free(vertex_shader_source);
 
-  char *fragment_shader_source = get_shader("shaders/fragment_shader.c");
+  char *fragment_shader_source = get_shader(FRAGMENT_SHADER_PATH);
 
   GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
   glShaderSource(fragment_shader, 1,
