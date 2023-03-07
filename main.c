@@ -3,7 +3,7 @@
 
 // Cursor state
 double xMousePos, yMousePos = 0.f;
-int inWindow = 0;
+int inWindow = FALSE;
 
 int main() {
 
@@ -240,8 +240,8 @@ static void cursor_position_callback(GLFWwindow *window, double xPos,
 
 void cursor_enter_callback(GLFWwindow *window, int inside) {
   if (inside) {
-    inWindow = 1;
+    inWindow = TRUE;
   } else {
-    inWindow = 0;
+    inWindow = FALSE;
   }
 }
