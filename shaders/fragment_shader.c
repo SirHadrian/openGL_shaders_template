@@ -42,7 +42,7 @@ void main() {
   uv -= .5;
   uv.x *= R.x / R.y;
 
-  uv *= 4.;
+  uv *= 5.;
 
   vec3 color = vec3(0.);
 
