@@ -1,7 +1,8 @@
 #include "main.h"
+#include <GLFW/glfw3.h>
 
 // Cursor state
-double xMousePos, yMousePos = 0.f;
+GLfloat xMousePos, yMousePos = 0.f;
 int inWindow = FALSE;
 
 int main() {
@@ -14,20 +15,29 @@ int main() {
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, MINOR_VERS);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  GLFWwindow *window = glfwCreateWindow(WIDTH, HEIGHT, TITLE, NULL, NULL);
+  void *start_fullscreen = NULL;
+  // void *start_fullscreen = glfwGetPrimaryMonitor();
+
+  // Create GLFW window object
+  GLFWwindow *window =
+      glfwCreateWindow(WIDTH, HEIGHT, TITLE, start_fullscreen, NULL);
 
   if (!window) {
     glfwTerminate();
     die("Failed to create GLFW window");
   }
 
+  // Make the GLFW window the current rendering context
   glfwMakeContextCurrent(window);
 
+  // Load glad
   if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
     die("Failed to initialize GLAD");
   }
 
+  // Aria of the window for openGL to render
   glViewport(0, 0, WIDTH, HEIGHT);
+
   glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
   // Mouse
@@ -86,15 +96,21 @@ int main() {
     // Input
     process_input(window, &shader_program);
 
-    // Render
+    // Render background color
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    // Clear the back buffer
     glClear(GL_COLOR_BUFFER_BIT);
 
-    float time = glfwGetTime();
-    GLuint u_time_location = glGetUniformLocation(shader_program, UNIFORM_TIME);
-    GLuint u_resolution_location =
+    // u_time uniform
+    GLfloat time = (GLfloat)glfwGetTime();
+    GLint u_time_location = glGetUniformLocation(shader_program, UNIFORM_TIME);
+
+    // u_resolution uniform
+    GLint u_resolution_location =
         glGetUniformLocation(shader_program, UNIFORM_RESOLUTION);
-    GLuint u_mouse_location =
+
+    // u_mouse uniform
+    GLint u_mouse_location =
         glGetUniformLocation(shader_program, UNIFORM_MOUSE);
 
     glUseProgram(shader_program);
@@ -119,6 +135,7 @@ int main() {
 
   glDeleteProgram(shader_program);
 
+  // Destroy current window and terminate GLFW
   glfwTerminate();
 
   return 0;
@@ -139,6 +156,15 @@ void process_input(GLFWwindow *window, GLuint *shader_program) {
     *shader_program = glCreateProgram();
 
     compile_shaders(shader_program);
+  } else if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+    GLFWmonitor *monitor = glfwGetWindowMonitor(window);
+    if (monitor != NULL) {
+      const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+      glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height,
+                           mode->refreshRate);
+    } else {
+      glfwSetWindowMonitor(window, NULL, 0, 0, WIDTH, HEIGHT, 0);
+    }
   }
 }
 
@@ -150,7 +176,7 @@ char *get_shader(char *shader_file) {
   }
 
   fseek(file, 0, SEEK_END);
-  unsigned int length = ftell(file);
+  long unsigned int length = (long unsigned int)ftell(file);
   fseek(file, 0, SEEK_SET);
 
   char *shader_string = (char *)malloc(sizeof(char) * (length + 1));
@@ -161,7 +187,7 @@ char *get_shader(char *shader_file) {
   char cursor;
   unsigned int index = 0;
 
-  while ((cursor = fgetc(file)) != EOF) {
+  while ((cursor = (char)fgetc(file)) != EOF) {
     shader_string[index] = cursor;
     index++;
   }
@@ -230,11 +256,12 @@ void compile_shaders(const GLuint *const shader_program) {
   glDeleteShader(vertex_shader);
   glDeleteShader(fragment_shader);
 }
+
 static void cursor_position_callback(GLFWwindow *window, double xPos,
                                      double yPos) {
   if (inWindow) {
-    xMousePos = xPos;
-    yMousePos = yPos;
+    xMousePos = (GLfloat)xPos;
+    yMousePos = (GLfloat)yPos;
   }
 }
 
