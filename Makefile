@@ -1,5 +1,5 @@
 COMPILER=gcc
-COMPILER_FLAGS=-Wall -Wextra -Wconversion -Wuninitialized
+COMPILER_FLAGS=-Wall -Wextra -Wconversion -Wuninitialized -g
 LIBS=-lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lm -ldl
 
 default: main.o glad.o

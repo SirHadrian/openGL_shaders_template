@@ -1,5 +1,6 @@
 #include "main.h"
 #include <GLFW/glfw3.h>
+#include <stdio.h>
 
 // Cursor state
 GLfloat xMousePos, yMousePos = 0.f;
@@ -156,16 +157,18 @@ void process_input(GLFWwindow *window, GLuint *shader_program) {
     *shader_program = glCreateProgram();
 
     compile_shaders(shader_program);
-  } else if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
-    GLFWmonitor *monitor = glfwGetWindowMonitor(window);
-    if (monitor != NULL) {
-      const GLFWvidmode *mode = glfwGetVideoMode(monitor);
-      glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height,
-                           mode->refreshRate);
-    } else {
-      glfwSetWindowMonitor(window, NULL, 0, 0, WIDTH, HEIGHT, 0);
-    }
   }
+  // Not working for some reason
+  // else if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
+  //   GLFWmonitor *monitor = glfwGetWindowMonitor(window);
+  //   if (monitor == NULL) {
+  //     const GLFWvidmode *mode = glfwGetVideoMode(monitor);
+  //     glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height,
+  //                          mode->refreshRate);
+  //   } else {
+  //     glfwSetWindowMonitor(window, NULL, 0, 0, WIDTH, HEIGHT, 0);
+  //   }
+  // }
 }
 
 char *get_shader(char *shader_file) {
