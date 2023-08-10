@@ -31,6 +31,8 @@
 #define MAJOR_VERS 4
 #define MINOR_VERS 6
 
+typedef enum { False = 0, True = 1 } Bool;
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 static void cursor_position_callback(GLFWwindow *window, double xPos,
                                      double yPos);

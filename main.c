@@ -3,7 +3,7 @@
 
 // Cursor state
 GLfloat xMousePos, yMousePos = 0.f;
-int inWindow = FALSE;
+Bool inWindow = False;
 
 int main() {
 
@@ -176,7 +176,7 @@ char *get_shader(char *shader_file) {
   }
 
   fseek(file, 0, SEEK_END);
-  long unsigned int length = (long unsigned int)ftell(file);
+  unsigned long int length = (unsigned long int)ftell(file);
   fseek(file, 0, SEEK_SET);
 
   char *shader_string = (char *)malloc(sizeof(char) * (length + 1));
@@ -267,8 +267,8 @@ static void cursor_position_callback(GLFWwindow *window, double xPos,
 
 void cursor_enter_callback(GLFWwindow *window, int inside) {
   if (inside) {
-    inWindow = TRUE;
+    inWindow = True;
   } else {
-    inWindow = FALSE;
+    inWindow = False;
   }
 }
