@@ -4,7 +4,7 @@
 GLfloat xMousePos, yMousePos = 0.f;
 Bool inWindow = False;
 
-int main() {
+int main(void) {
 
   if (!glfwInit()) {
     die("Could not initialize GLFW");
