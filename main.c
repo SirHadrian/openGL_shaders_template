@@ -100,7 +100,7 @@ int main() {
   // Texture
   int imgWidth, imgHeigth, numColCh;
   unsigned char *bytes =
-      stbi_load("textures/orion.jpg", &imgWidth, &imgHeigth, &numColCh, 0);
+      stbi_load(TEXTURE_PATH, &imgWidth, &imgHeigth, &numColCh, 0);
 
   GLuint texture;
   glGenTextures(1, &texture);

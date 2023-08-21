@@ -33,6 +33,8 @@
 #define VERTEX_SHADER_PATH "shaders/vertex_shader.c"
 #define FRAGMENT_SHADER_PATH "shaders/fragment_shader.c"
 
+#define TEXTURE_PATH "textures/orion.jpg"
+
 #define MAJOR_VERS 4
 #define MINOR_VERS 6
 
