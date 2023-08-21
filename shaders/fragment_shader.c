@@ -1,6 +1,11 @@
 #version 460 core
 layout(location = 0) out vec4 FragColor;
 
+in vec3 color;
+in vec2 texCoord;
+
+uniform sampler2D tex0;
+
 uniform float u_time;
 uniform vec2 u_resolution;
 uniform vec2 u_mouse;
@@ -13,34 +18,21 @@ uniform vec2 u_mouse;
 #define PI 3.14159265359
 #define S(a, b, x) smoothstep(a, b, x)
 
-#define N 24.
-#define B 4.
-
-vec3 palette(float t, vec3 a, vec3 b, vec3 c, vec3 d) {
-  return a + b * cos(6.28318 * (c * t + d));
-}
-
-float iterate(vec2 p) {
-  vec2 z = vec2(0), c = p;
-  float i;
-  for (i = 0.; i < N; i++) {
-    z = mat2(z, -z.y, z.x) * z + c;
-    if (dot(z, z) > B * B)
-      break;
-  }
-
-  return i - log(log(dot(z, z)) / log(B)) / log(2.);
-}
-
 void main() {
 
-  vec2 uv = (2. * FC.xy - R.xy) / R.y;
+  vec2 uv = gl_FragCoord.xy / R.xy;
 
-  float n = iterate(uv) / N;
-  if (n == 1.)
-    n = 0.;
+  vec2 pos = uv;
 
-  vec3 color = palette(n, vec3(.5), vec3(.5), vec3(1), vec3(.1, .1, .0));
+  pos -= .5;
+  pos.x *= R.x / R.y;
 
-  FragColor = vec4(color, 1.0);
+  float x = pos.x;
+  float y = pos.y;
+
+  float r = -(x * x + y * y);
+  float z = sin((r + T * .2) / .02);
+
+  // FragColor = vec4(vec3(pos.xy, z), 1.0f);
+  FragColor = texture(tex0, texCoord);
 }

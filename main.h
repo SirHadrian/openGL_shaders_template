@@ -27,6 +27,7 @@
 #define UNIFORM_TIME "u_time"
 #define UNIFORM_MOUSE "u_mouse"
 #define UNIFORM_RESOLUTION "u_resolution"
+#define UNIFORM_TEXTURE "tex0"
 
 #define VERTEX_SHADER_PATH "shaders/vertex_shader.c"
 #define FRAGMENT_SHADER_PATH "shaders/fragment_shader.c"

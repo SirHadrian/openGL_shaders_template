@@ -1,6 +1,7 @@
 #include "main.h"
-#include <GLFW/glfw3.h>
-#include <stdio.h>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
 
 // Cursor state
 GLfloat xMousePos, yMousePos = 0.f;
@@ -46,11 +47,12 @@ int main() {
   glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
   glfwSetCursorEnterCallback(window, cursor_enter_callback);
 
-  float vertices[] = {
-      1.0f,  1.0f,  0.0f, // top right
-      1.0f,  -1.0f, 0.0f, // bottom right
-      -1.0f, -1.0f, 0.0f, // bottom left
-      -1.0f, 1.0f,  0.0f  // top left
+  GLfloat vertices[] = {
+      //     COORDINATES     /        COLORS      /   TexCoord  //
+      1.0f,  1.0f,  0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Lower left corner
+      1.0f,  -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Upper left corner
+      -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Upper right corner
+      -1.0f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f  // Lower right corner
   };
 
   unsigned int indices[] = {
@@ -74,8 +76,15 @@ int main() {
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
                GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                        (void *)(3 * sizeof(float)));
+  glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
+                        (void *)(6 * sizeof(float)));
+
   glEnableVertexAttribArray(0);
+  glEnableVertexAttribArray(1);
+  glEnableVertexAttribArray(2);
 
   // glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
   //                       (void *)(3 * sizeof(float)));
@@ -91,6 +100,41 @@ int main() {
 
   // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
+  // Texture
+  int imgWidth, imgHeigth, numColCh;
+  unsigned char *bytes =
+      stbi_load("textures/orion.jpg", &imgWidth, &imgHeigth, &numColCh, 0);
+
+  GLuint texture;
+  glGenTextures(1, &texture);
+  glActiveTexture(GL_TEXTURE0);
+  glBindTexture(GL_TEXTURE_2D, texture);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, imgWidth, imgHeigth, 0, GL_RGBA,
+               GL_UNSIGNED_BYTE, bytes);
+
+  glGenerateMipmap(GL_TEXTURE_2D);
+
+  stbi_image_free(bytes);
+  glBindTexture(GL_TEXTURE_2D, 0);
+
+  // Uniforms
+  // u_time uniform
+  GLint u_time_location = glGetUniformLocation(shader_program, UNIFORM_TIME);
+  // u_resolution uniform
+  GLint u_resolution_location =
+      glGetUniformLocation(shader_program, UNIFORM_RESOLUTION);
+  // u_mouse uniform
+  GLint u_mouse_location = glGetUniformLocation(shader_program, UNIFORM_MOUSE);
+  // texture uniform
+  GLuint tex0Uni = glGetUniformLocation(shader_program, UNIFORM_TEXTURE);
+
   // Render loop
   while (!glfwWindowShouldClose(window)) {
 
@@ -102,22 +146,14 @@ int main() {
     // Clear the back buffer
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // u_time uniform
     GLfloat time = (GLfloat)glfwGetTime();
-    GLint u_time_location = glGetUniformLocation(shader_program, UNIFORM_TIME);
-
-    // u_resolution uniform
-    GLint u_resolution_location =
-        glGetUniformLocation(shader_program, UNIFORM_RESOLUTION);
-
-    // u_mouse uniform
-    GLint u_mouse_location =
-        glGetUniformLocation(shader_program, UNIFORM_MOUSE);
 
     glUseProgram(shader_program);
     glUniform1f(u_time_location, time);
     glUniform2f(u_resolution_location, WIDTH, HEIGHT);
     glUniform2f(u_mouse_location, xMousePos, yMousePos);
+    glUniform1i(tex0Uni, 0);
+    glBindTexture(GL_TEXTURE_2D, texture);
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
