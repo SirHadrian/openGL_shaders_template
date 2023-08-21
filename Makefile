@@ -1,5 +1,5 @@
 COMPILER=gcc
-COMPILER_FLAGS=-Wall -Wextra -Wconversion -Wuninitialized -ggdb
+COMPILER_FLAGS=-Wall -Wextra -Wconversion -Wuninitialized -O2
 LIBS=-lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lm -ldl
 
 default: main.o glad.o stb_image.o
