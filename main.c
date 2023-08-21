@@ -131,7 +131,7 @@ int main() {
   // u_mouse uniform
   GLint u_mouse_location = glGetUniformLocation(shader_program, UNIFORM_MOUSE);
   // texture uniform
-  GLuint tex0Uni = glGetUniformLocation(shader_program, UNIFORM_TEXTURE);
+  GLint tex0Uni = glGetUniformLocation(shader_program, UNIFORM_TEXTURE);
 
   // Render loop
   while (!glfwWindowShouldClose(window)) {
