@@ -1,8 +1,5 @@
 #include "main.h"
 
-#define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
-
 // Cursor state
 GLfloat xMousePos, yMousePos = 0.f;
 Bool inWindow = False;
