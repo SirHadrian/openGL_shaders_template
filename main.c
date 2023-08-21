@@ -99,6 +99,8 @@ int main() {
 
   // Texture
   int imgWidth, imgHeigth, numColCh;
+  // Flip image
+  // stbi_set_flip_vertically_on_load(True);
   unsigned char *bytes =
       stbi_load(TEXTURE_PATH, &imgWidth, &imgHeigth, &numColCh, 0);
 
@@ -167,6 +169,9 @@ int main() {
   glDeleteVertexArrays(1, &VAO);
   glDeleteBuffers(1, &VBO);
   glDeleteBuffers(1, &EBO);
+
+  // Delete Textures
+  glDeleteTextures(1, &texture);
 
   glDeleteProgram(shader_program);
 

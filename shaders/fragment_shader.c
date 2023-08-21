@@ -33,6 +33,9 @@ void main() {
   float r = -(x * x + y * y);
   float z = sin((r + T * .2) / .02);
 
-  // FragColor = vec4(vec3(pos.xy, z), 1.0f);
-  FragColor = texture(tex0, texCoord);
+  vec4 text = texture(tex0, texCoord * vec2(-1., 1.));
+
+  vec4 col = vec4(vec3(0., 0., z), 0.);
+
+  FragColor = text + col;
 }
