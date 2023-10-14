@@ -222,14 +222,13 @@ get_shader(char *shader_file)
   if (!file) 
     die("Could not open the shader file");
 
-
   fseek(file, 0, SEEK_END);
   unsigned long int length = (unsigned long int)ftell(file);
   fseek(file, 0, SEEK_SET);
 
-  char *shader_string = (char *)malloc(sizeof(char) * (length + 1));
+  char *shader_string = (char*)malloc((sizeof *shader_string) * (length + 1));
   if (!shader_string) 
-    die("Could not alocate memory for file contents");
+    die("Could not alocate memory for the shader file contents");
 
 
   char cursor;
