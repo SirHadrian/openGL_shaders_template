@@ -4,8 +4,8 @@
 GLfloat xMousePos, yMousePos = 0.f;
 Bool inWindow = False;
 
-int main(void) {
-
+int main(void)
+{
   if (!glfwInit()) {
     die("Could not initialize GLFW");
   }
@@ -19,7 +19,7 @@ int main(void) {
 
   // Create GLFW window object
   GLFWwindow *window =
-      glfwCreateWindow(WIDTH, HEIGHT, TITLE, start_fullscreen, NULL);
+    glfwCreateWindow(WIDTH, HEIGHT, TITLE, start_fullscreen, NULL);
 
   if (!window) {
     glfwTerminate();
@@ -45,17 +45,17 @@ int main(void) {
   glfwSetCursorEnterCallback(window, cursor_enter_callback);
 
   GLfloat vertices[] = {
-      //     COORDINATES     /        COLORS      /   TexCoord  //
-      1.0f,  1.0f,  0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Lower left corner
-      1.0f,  -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Upper left corner
-      -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Upper right corner
-      -1.0f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f  // Lower right corner
+    //     COORDINATES     /        COLORS      /   TexCoord  //
+    1.0f,  1.0f,  0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f, // Lower left corner
+    1.0f,  -1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, // Upper left corner
+    -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f, // Upper right corner
+    -1.0f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f  // Lower right corner
   };
 
   unsigned int indices[] = {
-      // note that we start from 0!
-      0, 1, 3, // first triangle
-      1, 2, 3  // second triangle
+    // note that we start from 0!
+    0, 1, 3, // first triangle
+    1, 2, 3  // second triangle
   };
 
   GLuint VAO, VBO, EBO;
@@ -71,13 +71,13 @@ int main(void) {
 
   glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
   glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices,
-               GL_STATIC_DRAW);
+      GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void *)0);
-  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                        (void *)(3 * sizeof(float)));
+  glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), 
+      (void *)(3 * sizeof(float)));
   glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
-                        (void *)(6 * sizeof(float)));
+      (void *)(6 * sizeof(float)));
 
   glEnableVertexAttribArray(0);
   glEnableVertexAttribArray(1);
@@ -102,7 +102,7 @@ int main(void) {
   // Flip image
   // stbi_set_flip_vertically_on_load(True);
   unsigned char *bytes =
-      stbi_load(TEXTURE_PATH, &imgWidth, &imgHeigth, &numColCh, 0);
+    stbi_load(TEXTURE_PATH, &imgWidth, &imgHeigth, &numColCh, 0);
 
   GLuint texture;
   glGenTextures(1, &texture);
@@ -117,7 +117,7 @@ int main(void) {
 
   // For images with an alpha channel use GL_RGBA
   glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, imgWidth, imgHeigth, 0, GL_RGB,
-               GL_UNSIGNED_BYTE, bytes);
+      GL_UNSIGNED_BYTE, bytes);
 
   glGenerateMipmap(GL_TEXTURE_2D);
 
@@ -129,7 +129,7 @@ int main(void) {
   GLint u_time_location = glGetUniformLocation(shader_program, UNIFORM_TIME);
   // u_resolution uniform
   GLint u_resolution_location =
-      glGetUniformLocation(shader_program, UNIFORM_RESOLUTION);
+    glGetUniformLocation(shader_program, UNIFORM_RESOLUTION);
   // u_mouse uniform
   GLint u_mouse_location = glGetUniformLocation(shader_program, UNIFORM_MOUSE);
   // texture uniform
@@ -137,7 +137,6 @@ int main(void) {
 
   // Render loop
   while (!glfwWindowShouldClose(window)) {
-
     // Input
     process_input(window, &shader_program);
 
@@ -178,15 +177,16 @@ int main(void) {
   // Destroy current window and terminate GLFW
   glfwTerminate();
 
-  return 0;
+  return EXIT_SUCCESS;
 }
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow *window, int width, int height)
+{
   glViewport(0, 0, width, height);
 }
 
-void process_input(GLFWwindow *window, GLuint *shader_program) {
-
+void process_input(GLFWwindow *window, GLuint *shader_program) 
+{
   if (glfwGetKey(window, GLFW_KEY_ESCAPE) ||
       glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     glfwSetWindowShouldClose(window, TRUE);
@@ -210,8 +210,8 @@ void process_input(GLFWwindow *window, GLuint *shader_program) {
   // }
 }
 
-char *get_shader(char *shader_file) {
-
+char *get_shader(char *shader_file)
+{
   FILE *file = fopen(shader_file, "r");
   if (!file) {
     die("Could not open the shader file");
@@ -241,18 +241,19 @@ char *get_shader(char *shader_file) {
   return shader_string;
 }
 
-void die(const char *error) {
+void die(const char *error)
+{
   fprintf(stderr, "%s\n", error);
   exit(EXIT_FAILURE);
 }
 
-void compile_shaders(const GLuint *const shader_program) {
-
+void compile_shaders(const GLuint *const shader_program)
+{
   char *vertex_shader_source = get_shader(VERTEX_SHADER_PATH);
 
   GLuint vertex_shader = glCreateShader(GL_VERTEX_SHADER);
   glShaderSource(vertex_shader, 1, (char const *const *)&vertex_shader_source,
-                 NULL);
+      NULL);
   glCompileShader(vertex_shader);
 
   int success;
@@ -271,7 +272,7 @@ void compile_shaders(const GLuint *const shader_program) {
 
   GLuint fragment_shader = glCreateShader(GL_FRAGMENT_SHADER);
   glShaderSource(fragment_shader, 1,
-                 (char const *const *)&fragment_shader_source, NULL);
+      (char const *const *)&fragment_shader_source, NULL);
   glCompileShader(fragment_shader);
 
   glGetShaderiv(fragment_shader, GL_COMPILE_STATUS, &success);
@@ -299,15 +300,16 @@ void compile_shaders(const GLuint *const shader_program) {
   glDeleteShader(fragment_shader);
 }
 
-static void cursor_position_callback(GLFWwindow *window, double xPos,
-                                     double yPos) {
+static void cursor_position_callback(GLFWwindow *window, double xPos, double yPos)
+{
   if (inWindow) {
     xMousePos = (GLfloat)xPos;
     yMousePos = (GLfloat)yPos;
   }
 }
 
-void cursor_enter_callback(GLFWwindow *window, int inside) {
+void cursor_enter_callback(GLFWwindow *window, int inside)
+{
   if (inside) {
     inWindow = True;
   } else {
