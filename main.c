@@ -52,7 +52,7 @@ main(void)
     -1.0f, 1.0f,  0.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f  // Lower right corner
   };
 
-  unsigned int indices[] = {
+  uint indices[] = {
     // note that we start from 0!
     0, 1, 3, // first triangle
     1, 2, 3  // second triangle
@@ -101,7 +101,7 @@ main(void)
   int imgWidth, imgHeigth, numColCh;
   // Flip image
   // stbi_set_flip_vertically_on_load(True);
-  unsigned char *bytes =
+  uchar *bytes =
     stbi_load(TEXTURE_PATH, &imgWidth, &imgHeigth, &numColCh, 0);
 
   GLuint texture;
@@ -223,24 +223,22 @@ get_shader(char *shader_file)
     die("Could not open the shader file");
 
   fseek(file, 0, SEEK_END);
-  unsigned long int length = (unsigned long int)ftell(file);
+  ulint length = (ulint)ftell(file);
   fseek(file, 0, SEEK_SET);
 
-  char *shader_string = (char*)malloc((sizeof *shader_string) * (length + 1));
+  char *shader_string = malloc(sizeof *shader_string * (length + 1));
   if (!shader_string) 
     die("Could not alocate memory for the shader file contents");
 
+  int cursor;
+  uint index = 0;
 
-  char cursor;
-  unsigned int index = 0;
-
-  while ((cursor = (char)fgetc(file)) != EOF) 
+  while ((cursor = fgetc(file)) != EOF) 
   {
-    shader_string[index] = cursor;
+    shader_string[index] = (char)cursor;
     index++;
   }
-
-  shader_string[index] = '\0';
+  shader_string[length] = '\0';
 
   fclose(file);
 

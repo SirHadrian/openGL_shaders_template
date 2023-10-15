@@ -46,6 +46,10 @@
 
 typedef enum { False = 0, True = 1 } Bool;
 
+typedef unsigned int uint;
+typedef unsigned long int ulint;
+typedef unsigned char uchar;
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 static void cursor_position_callback(GLFWwindow *window, double xPos, double yPos);
 void cursor_enter_callback(GLFWwindow *window, int inside);
