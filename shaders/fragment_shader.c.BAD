@@ -17,7 +17,7 @@ uniform vec2 u_mouse;
 #define CELL_SIZE 1.
 // If the uv space is too big the lines will disappear.
 // Increase the line size to make them appear.
-#define LINE_SIZE 0.01
+#define LINE_SIZE 0.02
 
 vec3 draw_grid(vec2 uv) {
 
@@ -45,10 +45,49 @@ float N21(vec2 p) {
 
 void main() {
 
-  vec2 uv = (FC.xy - .5 * R.xy) / R.y;
+  vec2 uv = FC.xy / R.xy;
+  uv -= .5;
+  uv.x *= R.x / R.y;
+
+  uv *= 3.;
+
+  float dropSpeed = T * .25;
+
+  uv.y += dropSpeed;
+
+  vec2 aspect = vec2(2., 1.);
   vec3 color = vec3(0.);
 
-  color += step(.0, uv.x);
+  uv *= aspect;
+  vec2 gv = fract(uv) - .5;
+  vec2 id = floor(uv);
+
+  // color.rg = gv;
+
+  float n = N21(id);
+  float time = (n * 2 * PI) + T;
+
+  float w = gv.y * 10;
+  float x = (n - .5) * .8;
+  x += (.4 - abs(x)) * sin(3 * w) * pow(sin(w), 6) * .45;
+  float y = -sin(time + sin(time + sin(time) * .5)) * .45;
+  y -= (gv.x - x) * (gv.x - x);
+
+  vec2 dropPos = (gv - vec2(x, y)) / aspect;
+  color += S(.05, .03, length(dropPos));
+
+  vec2 trailPos = (gv - vec2(x, dropSpeed)) / aspect;
+
+  trailPos.y = (fract(trailPos.y * 8) - .5) / 8;
+  float trail = S(.03, .01, length(trailPos));
+  trail *= S(-.05, .05, dropPos.y);
+  trail *= S(.5, y, gv.y);
+
+  color += trail;
+  color += draw_grid(gv - .5);
+
+  // color *= 0;
+  // color += N21(id);
 
   FragColor = vec4(color, 1.);
 }

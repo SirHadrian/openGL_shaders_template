@@ -1,13 +1,12 @@
 #pragma once
-// clang-format off
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-// clang-format on
 
-#include "stb_image.h"
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "stb_image.h"
 
 #ifndef TRUE
 #define TRUE 1
@@ -38,11 +37,22 @@
 #define MAJOR_VERS 4
 #define MINOR_VERS 6
 
+#ifndef EXIT_SUCCESS
+#define EXIT_SUCCESS 0
+#endif
+
+#ifndef EXIT_FAILURE
+#define EXIT_FAILURE -1
+#endif
+
 typedef enum { False = 0, True = 1 } Bool;
 
+typedef unsigned int uint;
+typedef unsigned long int ulint;
+typedef unsigned char uchar;
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-static void cursor_position_callback(GLFWwindow *window, double xPos,
-                                     double yPos);
+static void cursor_position_callback(GLFWwindow *window, double xPos, double yPos);
 void cursor_enter_callback(GLFWwindow *window, int inside);
 void process_input(GLFWwindow *window, GLuint *shader_program);
 char *get_shader(char *shader_file);
