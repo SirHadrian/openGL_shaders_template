@@ -219,8 +219,11 @@ char*
 get_shader(char *shader_file)
 {
   FILE *file = fopen(shader_file, "r");
-  if (!file) 
-    die("Could not open the shader file");
+  if (!file)
+  {
+    fprintf(stderr, "ERROR: Could not open file: %s, does it exist?\n", shader_file);
+    exit(EXIT_FAILURE);
+  }
 
   fseek(file, 0, SEEK_END);
   ulint length = (ulint)ftell(file);
@@ -248,7 +251,7 @@ get_shader(char *shader_file)
 void
 die(const char *error) 
 {
-  fprintf(stderr, "%s\n", error);
+  fprintf(stderr, "ERROR: %s\n", error);
   exit(EXIT_FAILURE);
 }
 
