@@ -4,7 +4,6 @@
 
 #include <math.h>
 #include <stdio.h>
-#include <stdlib.h>
 
 #include "stb_image.h"
 
@@ -14,6 +13,14 @@
 
 #ifndef FALSE
 #define FALSE 0
+#endif
+
+#ifndef EXIT_SUCCESS
+#define EXIT_SUCCESS 0
+#endif
+
+#ifndef EXIT_FAILURE
+#define EXIT_FAILURE -1
 #endif
 
 // #define WIDTH 1920.0f
@@ -37,14 +44,6 @@
 #define MAJOR_VERS 4
 #define MINOR_VERS 6
 
-#ifndef EXIT_SUCCESS
-#define EXIT_SUCCESS 0
-#endif
-
-#ifndef EXIT_FAILURE
-#define EXIT_FAILURE -1
-#endif
-
 typedef enum { False = 0, True = 1 } Bool;
 
 typedef unsigned int uint;
@@ -55,6 +54,6 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 static void cursor_position_callback(GLFWwindow *window, double xPos, double yPos);
 void cursor_enter_callback(GLFWwindow *window, int inside);
 void process_input(GLFWwindow *window, GLuint *shader_program);
-char *get_shader(char *shader_file);
+char* get_shader(char *shader_file);
 void die(const char *error);
 void compile_shaders(const GLuint *const shader_program);
