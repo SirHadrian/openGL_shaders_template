@@ -1,4 +1,6 @@
 #include "main.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 // Cursor state
 GLfloat xMousePos, yMousePos = 0.f;
@@ -221,7 +223,7 @@ get_shader(char *shader_file)
   FILE *file = fopen(shader_file, "r");
   if (!file)
   {
-    fprintf(stderr, "ERROR: Could not open file: %s, does it exist?\n", shader_file);
+    fprintf(stderr, "ERROR: %s - %s\n", shader_file, strerror(errno));
     exit(EXIT_FAILURE);
   }
 
@@ -231,7 +233,10 @@ get_shader(char *shader_file)
 
   char *shader_string = malloc(sizeof *shader_string * (length + 1));
   if (!shader_string) 
-    die("Could not alocate memory for the shader file contents");
+  {
+    fprintf(stderr, "Error: %s\n", strerror(errno)); 
+    exit(EXIT_FAILURE);
+  }
 
   int cursor;
   uint index = 0;
