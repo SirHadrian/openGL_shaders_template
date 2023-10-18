@@ -9,6 +9,8 @@
 
 #include "stb_image.h"
 
+extern int errno;
+
 #ifndef TRUE
 #define TRUE 1
 #endif
@@ -24,6 +26,12 @@
 #ifndef EXIT_FAILURE
 #define EXIT_FAILURE -1
 #endif
+
+#define ERROR(errno) \
+do { \
+  fprintf(stderr, "ERROR: %s:%d - %s\n", __FILE__, __LINE__, strerror(errno)); \
+  exit(EXIT_FAILURE); \
+} while(0)
 
 // #define WIDTH 1920.0f
 // #define HEIGHT 1080.0f

@@ -220,10 +220,7 @@ get_shader(char *shader_file)
 {
   FILE *file = fopen(shader_file, "r");
   if (!file)
-  {
-    fprintf(stderr, "ERROR: %s - %s\n", shader_file, strerror(errno));
-    exit(EXIT_FAILURE);
-  }
+    ERROR(errno);
 
   fseek(file, 0, SEEK_END);
   ulint length = (ulint)ftell(file);
@@ -231,10 +228,7 @@ get_shader(char *shader_file)
 
   char *shader_string = malloc(sizeof *shader_string * (length + 1));
   if (!shader_string) 
-  {
-    fprintf(stderr, "Error: %s\n", strerror(errno)); 
-    exit(EXIT_FAILURE);
-  }
+    ERROR(errno);
 
   int cursor;
   uint index = 0;
