@@ -27,6 +27,12 @@ extern int errno;
 #define EXIT_FAILURE -1
 #endif
 
+#define ERROR(errno) \
+do { \
+  fprintf(stderr, "ERROR: %s:%d - %s\n", __FILE__, __LINE__, strerror(errno)); \
+  exit(EXIT_FAILURE); \
+} while(0)
+
 // #define WIDTH 1920.0f
 // #define HEIGHT 1080.0f
 
