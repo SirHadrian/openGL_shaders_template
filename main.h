@@ -4,6 +4,8 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <errno.h>
+#include <string.h>
 
 #include "stb_image.h"
 
