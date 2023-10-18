@@ -27,7 +27,7 @@ extern int errno;
 #define EXIT_FAILURE -1
 #endif
 
-#define ERROR(errno, msg) \
+#define ERROR_N_DIE(errno, msg) \
 do { \
   fprintf(stderr, "ERROR: %s:%d - %s | %s\n", __FILE__, __LINE__, \
       strerror(errno), msg); \
