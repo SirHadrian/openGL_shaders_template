@@ -29,7 +29,7 @@ extern int errno;
 
 #define ERROR(errno, msg) \
 do { \
-  fprintf(stderr, "ERROR: %s:%d - %s - %s\n", __FILE__, __LINE__, \
+  fprintf(stderr, "ERROR: %s:%d - %s | %s\n", __FILE__, __LINE__, \
       strerror(errno), msg); \
   exit(EXIT_FAILURE); \
 } while(0)
