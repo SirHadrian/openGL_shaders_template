@@ -11,6 +11,8 @@
 
 extern int errno;
 
+#define DEBUG
+
 #ifndef TRUE
 #define TRUE 1
 #endif
@@ -27,12 +29,22 @@ extern int errno;
 #define EXIT_FAILURE -1
 #endif
 
+#ifdef DEBUG
+#define D(msg) \
+  do { \
+    fprintf(stderr, "DEBUG: %s:%d - %s\n", __FILE__, __LINE__, msg); \
+  } while(0)
+#else
+#define D(x) \
+  do {} while(0)
+#endif
+
 #define ERROR(errno, msg) \
-do { \
-  fprintf(stderr, "ERROR: %s:%d - %s | %s\n", __FILE__, __LINE__, \
-      strerror(errno), msg); \
-  exit(EXIT_FAILURE); \
-} while(0)
+  do { \
+    fprintf(stderr, "ERROR: %s:%d - %s | %s\n", __FILE__, __LINE__, \
+        strerror(errno), msg); \
+    exit(EXIT_FAILURE); \
+  } while(0)
 
 // #define WIDTH 1920.0f
 // #define HEIGHT 1080.0f
