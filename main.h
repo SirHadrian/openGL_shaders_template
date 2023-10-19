@@ -38,7 +38,7 @@ extern int errno;
   do {} while(0)
 #endif
 
-#define ERROR(errno, msg) \
+#define ERROR_N_DIE(errno, msg) \
   do { \
     fprintf(stderr, "ERROR: %s:%d - %s | %s\n", __FILE__, __LINE__, \
         strerror(errno), msg); \
