@@ -248,7 +248,7 @@ get_shader(char *shader_file)
 void
 die(const char *error) 
 {
-  fprintf(stderr, "%s\n", error);
+  fprintf(stderr, "ERROR: %s\n", error);
   exit(EXIT_FAILURE);
 }
 
