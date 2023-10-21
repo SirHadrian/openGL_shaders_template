@@ -45,13 +45,6 @@ do { \
   do {} while(0)
 #endif
 
-#define ERROR_N_DIE(errno, msg) \
-  do { \
-    fprintf(stderr, "ERROR: %s:%d - %s | %s\n", __FILE__, __LINE__, \
-        strerror(errno), msg); \
-    exit(EXIT_FAILURE); \
-  } while(0)
-
 // #define WIDTH 1920.0f
 // #define HEIGHT 1080.0f
 
