@@ -35,16 +35,6 @@ do { \
   exit(EXIT_FAILURE); \
 } while(0)
 
-#ifdef DEBUG
-#define D(msg) \
-  do { \
-    fprintf(stderr, "DEBUG: %s:%d - %s\n", __FILE__, __LINE__, msg); \
-  } while(0)
-#else
-#define D(x) \
-  do {} while(0)
-#endif
-
 // #define WIDTH 1920.0f
 // #define HEIGHT 1080.0f
 
