@@ -4,7 +4,7 @@
 #define INFO "INFO"
 #define DEBUG "DEBUG"
 
-#ifdef DEBUG_MACRO
+#ifdef DBG
 #define D(msg) \
   do { \
     fprintf(stderr, "DEBUG: %s:%d - %s\n", __FILE__, __LINE__, msg); \
@@ -14,6 +14,6 @@
   do {} while(0)
 #endif
 
-void logger(const char* tag, const char* message);
+void LOG(const char* tag, const char* message);
 
 #endif 
