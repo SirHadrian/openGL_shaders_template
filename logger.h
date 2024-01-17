@@ -14,6 +14,6 @@
   do {} while(0)
 #endif
 
-void LOG(const char* tag, const char* message);
+void LOG(char const * const tag, char const * const message);
 
-#endif 
+#endif
