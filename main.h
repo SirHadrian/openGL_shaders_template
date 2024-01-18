@@ -66,6 +66,6 @@ void framebuffer_size_callback(GLFWwindow * window, int width, int height);
 static void cursor_position_callback(GLFWwindow * window, double xPos, double yPos);
 void cursor_enter_callback(GLFWwindow * window, int inside);
 void process_input(GLFWwindow * window, GLuint * shader_program);
-char* get_shader(char * shader_file);
+char * get_shader(char * shader_file);
 void die(char const * error);
 void compile_shaders(GLuint const * const shader_program);
