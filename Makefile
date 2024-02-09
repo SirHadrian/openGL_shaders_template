@@ -1,18 +1,32 @@
+TARGET=window.out
+SRCDIRS=. ./src
+
 CC=gcc
 LD=gcc
-CFLAGS=-Wall -Wextra -Wconversion -Wuninitialized
-LDFLAGS=-lglfw3 -lGL -lX11 -lpthread -lXrandr -lXi -lm -ldl
-OBJS=main.o glad.o stb_image.o
-TARGET=window.out
 
-all: ${TARGET}
-	./${TARGET}
+DEPFLAGS=-MP -MD
+OPT=-O0
 
-${TARGET}: ${OBJS}
-	${LD} ${OBJS} ${LDFLAGS} -o ${TARGET}
+CFLAGS=$(DEPFLAGS) $(OPT) -Wall -Wextra -Wconversion -Wuninitialized
+LDFLAGS=-lglfw -lGL -lX11 -lpthread -lXrandr -lXi -lm -ldl
+
+CFILES=$(foreach D, $(SRCDIRS), $(wildcard $(D)/*.c))
+OBJECTS=$(patsubst %.c, %.o, $(CFILES))
+DEPFILES=$(patsubst %.c, %.d, $(CFILES))
+
+all: $(TARGET)
+	./$(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(LD) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
-	${CC} ${CFLAGS} -c $<
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm *.o window.out
+	rm $(TARGET) $(DEPFILES) $(OBJECTS)
+
+package: clean
+	tar -cvzf dist.tar.gz *
+
+-include $(DEPFILES)
