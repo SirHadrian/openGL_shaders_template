@@ -6,7 +6,7 @@
 #define VERTEX_SHADER_PATH      "shaders/vertex_shader.c"
 #define FRAGMENT_SHADER_PATH    "shaders/fragment_shader.c"
 
-GLchar *const   get_shader(char *shader_file);
-void            compile_shaders(GLuint const *const shader_program);
+GLchar*         get_shader(char *shader_file);
+int             compile_shaders(GLuint const *const new_shader_program);
 
 #endif /* SHADER_H */

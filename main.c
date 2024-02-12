@@ -181,21 +181,23 @@ process_input(GLFWwindow *const window, GLuint *const shader_program)
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) || glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
                 glfwSetWindowShouldClose(window, GLFW_TRUE);
         } else if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+
+                GLuint new_shader_program = glCreateProgram();
+                if (!new_shader_program) {
+                        fprintf(stderr, "%s", "Could not create new shader program\n");
+                        return;
+                }
+
+                int succes = compile_shaders(&new_shader_program);
+                if (succes) {
+                        fprintf(stderr, "%s", "Could not compile shaders\n");
+                        glDeleteProgram(new_shader_program);
+                        return;
+                }
+
                 glDeleteProgram(*shader_program);
-                *shader_program = glCreateProgram();
-                compile_shaders(shader_program);
+                *shader_program = new_shader_program;
         }
-        // Not working for some reason
-        // else if(glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
-        //   GLFWmonitor *monitor = glfwGetWindowMonitor(window);
-        //   if(monitor == NULL) {
-        //     const GLFWvidmode *mode = glfwGetVideoMode(monitor);
-        //     glfwSetWindowMonitor(window, monitor, 0, 0, mode->width, mode->height,
-        //                          mode->refreshRate);
-        //   } else {
-        //     glfwSetWindowMonitor(window, NULL, 0, 0, WIDTH, HEIGHT, 0);
-        //   }
-        // }
 }
 
 void
