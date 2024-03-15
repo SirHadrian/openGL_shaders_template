@@ -8,7 +8,8 @@
 GLfloat xMousePos = 0.f, yMousePos = 0.f;
 int is_inside_window = 0;
 
-int main(void)
+int
+main(void)
 {
         if (!glfwInit()) {
                 die("Could not initialize GLFW");
@@ -130,7 +131,6 @@ int main(void)
 
         // Render loop
         while (!glfwWindowShouldClose(window)) {
-                // Input
                 process_input(window, &shader_program);
 
                 // Render background color
@@ -158,7 +158,7 @@ int main(void)
                 glfwPollEvents();
         }
 
-        // Dealocate resources
+        // Deallocate resources
         glDeleteVertexArrays(1, &VAO);
         glDeleteBuffers(1, &VBO);
         glDeleteBuffers(1, &EBO);
